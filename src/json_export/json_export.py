@@ -31,24 +31,23 @@ class JsonExport:
         if not os.path.exists(output_path):
             os.makedirs(output_path)
         if landmarks.pose_landmarks:
-            if len(landmarks.pose_landmarks.landmark) == 33:
-                key_points = []
-                for landmark in landmarks.pose_landmarks.landmark:
-                    key_points.append(
-                        [
-                            landmark.x,
-                            landmark.y,
-                            landmark.z,
-                            self.frame_width,
-                            self.frame_height,
-                        ]
-                    )
-                self.json_output[self.frame_id] = key_points
+			key_points = []
+			for landmark in landmarks.pose_landmarks.landmark:
+				key_points.append(
+				    [
+				        landmark.x,
+				        landmark.y,
+				        landmark.z,
+				        self.frame_width,
+				        self.frame_height,
+				    ]
+				)
+			self.json_output[self.frame_id] = key_points
 
-                json_output = json.dumps(self.json_output, indent=2)
-                with open(f"{output_path}/pose.json", "w") as outfile:
-                    outfile.write(json_output)
-                self.frame_id += 1
+			json_output = json.dumps(self.json_output, indent=2)
+			with open(f"{output_path}/pose.json", "w") as outfile:
+				outfile.write(json_output)
+			self.frame_id += 1
 
     def export_mp4_video_with_poses(self, frame):
         self.video_out.write(frame)
