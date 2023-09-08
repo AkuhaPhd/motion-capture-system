@@ -6,17 +6,25 @@ class PoseEstimation:
     """Pose estimation module powered by Google's mediapipe. All methods are public."""
 
     def __init__(
-            self, mode=False, up_body=False, smooth=True, detection_conf=0.5, track_conf=0.5
+        self,
+        mode=False,
+        complexity=1,
+        smooth=True,
+        segmentation=False,
+        detection_conf=0.5,
+        track_conf=0.5,
     ):
         self.mp_pose = mp.solutions.pose
         self.mp_draw = mp.solutions.drawing_utils
         self.pose = self.mp_pose.Pose(
-            mode, 1, up_body, smooth, True, detection_conf, track_conf
+            static_image_mode=mode,
+            model_complexity=complexity,
+            smooth_landmarks=smooth,
+            enable_segmentation=segmentation,
+            smooth_segmentation=segmentation,
+            min_detection_confidence=detection_conf,
+            min_tracking_confidence=track_conf,
         )
-        # mode: to get fast detections and track
-        # model_complexity=1: complexity of the landmark
-        # up_body: whole body
-        # smooth: whethe to filter landmark accross different input images to reduce jitter
 
     def estimate_landmarks(self, frame):
         """
